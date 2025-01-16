@@ -1,0 +1,14 @@
+route_id,route_name,route_type,route_color
+MA,Perrache --> Vaulx-en-Velin La Soie,1,E8308A
+MB,Charpennes --> St-Genis-Laval Hôp. Sud,1,0075BF
+MC,Hôtel de Ville L. Pradel --> Cuire,1,F59C00
+MD,Gare de Vaise --> Gare de Vénissieux,1,009E3D
+F1,Vieux Lyon --> St Just,7,95C23D
+F2,Vieux Lyon --> Fourvière,7,95C23D
+T1,Debourg --> IUT Feyssine,0,8C368C
+T2,Hôtel Région Montrochet --> Saint-Priest Bel Air,0,8C368C
+T3,Gare Part-Dieu Villette --> Meyzieu les Panettes,0,8C368C
+T4,La Doua - Gaston Berger --> Hop. Feyzin Venissieux,0,8C368C
+T5,Grange Blanche --> Eurexpo Entrée Princ.,0,8C368C
+T6,Debourg --> Hôpitaux Est - Pinel,0,8C368C
+T7,Vaulx-en-Velin La Soie --> Décines OL Vallée,0,8C368C

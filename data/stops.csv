@@ -1,0 +1,180 @@
+stop_id,stop_name,stop_lat,stop_lon,wheelchair_boarding
+MA01,Perrache,45.749589,4.827053,1
+MA02,Ampère - Victor Hugo,45.753007,4.829158,0
+MA03,Bellecour,45.757597,4.833065,1
+MA04,Cordeliers,45.762985,4.835789,1
+MA05,Hôtel de Ville - Louis Pradel,45.767593,4.836073,1
+MA06,Foch,45.768779,4.844450,1
+MA07,Masséna,45.769582,4.853219,1
+MA08,Charpennes - Charles Hernu,45.770579,4.863804,1
+MA09,République - Villeurbanne,45.770606,4.873691,1
+MA10,Gratte-Ciel,45.769032,4.882258,1
+MA11,Flachet - Alain Gilles,45.767573,4.890164,1
+MA12,Cusset,45.765635,4.900663,1
+MA13,Laurent Bonnevay - Astroballe,45.764126,4.908964,1
+MA14,Vaulx-en-Velin La Soie,45.761263,4.922063,1
+MB01,Charpennes - Charles Hernu,45.770268,4.863016,1
+MB02,Brotteaux,45.766832,4.859244,1
+MB03,Gare Part-Dieu Vivier Merle,45.761604,4.858263,1
+MB04,Place Guichard,45.759399,4.847719,1
+MB05,Saxe-Gambetta,45.753927,4.846977,1
+MB06,Jean Macé,45.745929,4.842252,1
+MB07,Place Jean Jaurès,45.738030,4.837603,1
+MB08,Debourg,45.731413,4.833647,1
+MB09,Stade de Gerland,45.727337,4.831208,1
+MB10,Gare d'Oullins,45.716680,4.814525,1
+MB11,Oullins Centre,45.714314,4.805274,1
+MB12,Saint-Genis-Laval - Hôpital Lyon Sud,45.701296,4.804473,1
+MC01,Cuire,45.785240,4.832611,1
+MC02,Hénon,45.779151,4.827559,1
+MC03,Croix-Rousse,45.774381,4.831985,1
+MC04,Croix-Paquet,45.771036,4.836226,0
+MC05,Hôtel de Ville - Louis Pradel,45.767593,4.836073,1
+MD01,Gare de Vaise,45.780410,4.805105,1
+MD02,Valmy,45.774612,4.805415,1
+MD03,Gorge de Loup,45.766021,4.805264,1
+MD04,Vieux Lyon - Cathédrale Saint-Jean,45.759972,4.826496,1
+MD05,Bellecour,45.757597,4.833065,1
+MD06,Guillotière - Gabriel Péri,45.755503,4.842394,1
+MD07,Saxe-Gambetta,45.753927,4.846977,1
+MD08,Garibaldi,45.751442,4.854181,1
+MD09,Sans Souci,45.747876,4.864532,1
+MD10,Monplaisir - Lumière,45.745560,4.871256,1
+MD11,Grange Blanche,45.742956,4.878839,1
+MD12,Laënnec,45.738361,4.886618,1
+MD13,Mermoz - Pinel,45.730859,4.887842,1
+MD14,Parilly,45.719558,4.887536,1
+MD15,Gare de Vénissieux,45.705679,4.887904,1
+T101,Debourg,45.731231,4.834470,1
+T102,ENS Lyon,45.731444,4.828649,1
+T103,Halle Tony Garnier,45.731708,4.822901,1
+T104,Musée des Confluences,45.733606,4.819013,1
+T105,Hôtel de Région Montrochet,45.74061,4.819055,1
+T106,Sainte-Blandine,45.744185,4.822113,1
+T107,Place des Archives,45.747081,4.824560,1
+T108,Perrache,45.749586,4.827049,1
+T109,Quai Claude Bernard,45.749647,4.835260,1
+T110,Rue de l'Université,45.751100,4.839162,1
+T111,Saint-André,45.752915,4.841062,1
+T112,Guillotière - Gabriel Péri,45.754901,4.842409,1
+T113,Liberté,45.758807,4.842457,1
+T114,Saxe - Préfecture,45.760130,4.845178,1
+T115,Palais de Justice - Mairie du 3e,45.760351,4.848456,1
+T116,Part-Dieu Auditorium,45.760728,4.854020,1
+T117,Gare Part-Dieu Vivier Merle,45.761767,4.857852,1
+T118,Thiers - Lafayette,45.764435,4.862038,1
+T119,Collège Bellecombe,45.766741,4.861922,1
+T120,Chapennes Charles Hernu,45.771197,4.863075,1
+T121,Le Tonkin,45.774100,4.864031,1
+T122,Condorcet,45.778009,4.866914,1
+T123,Université Lyon 1,45.780916,4.866447,1
+T124,La Doua Gaston Berger,45.781584,4.871898,1
+T125,INSA - Einstein,45.782418,4.877439,1
+T126,Croix-Luizet,45.783700,4.883234,1
+T127,IUT Feyssine,45.786935,4.881901,1
+T201,Hôtel de Région Montrochet,45.74061,4.819055,1
+T202,Sainte-Blandine,45.744185,4.822113,1
+T203,Place des Archives,45.747081,4.824560,1
+T204,Perrache,45.749586,4.827049,1
+T205,Centre Berthelot - Sciences Po Lyon,45.747090,4.836223,1
+T206,Jean Macé,45.745110,4.842419,1
+T207,Garibaldi - Berthelot,45.743670,4.846914,1
+T208,Route de Vienne,45.742185,4.851600,1
+T209,Jet D'eau - Mendès France,45.739940,4.858630,1
+T210,Villon,45.738432,4.863309,1
+T211,Bachut - Mairie du 8e,45.736857,4.868236,1
+T212,Jean XXIII - Maryse Bastié,45.740237,4.874525,1
+T213,Grange Blanche,45.742453,4.879701,1
+T214,Ambroise Paré,45.741490,4.884058,1
+T215,Desgenettes,45.738788,4.893439,1
+T216,Essart - Iris,45.737265,4.898062,1
+T217,Boutasse - Camille Rousset,45.734933,4.904496,1
+T218,Hôtel de Ville - Bron,45.733413,4.909088,1
+T219,Les Alizés,45.731545,4.914729,1
+T220,Rebufer,45.727549,4.915688,1
+T221,Parilly - Université - Hippodrome,45.722109,4.915232,1
+T222,Europe - Université,45.719646,4.918212,1
+T223,Porte des Alpes,45.718400,4.925767,1
+T224,Parc Technologique,45.714392,4.931224,1
+T225,Hauts de Feuilly,45.708139,4.937626,1
+T226,Salvador Allende,45.703417,4.934901,1
+T227,Alfred de Vigny,45.699643,4.936102,1
+T228,Saint-Priest Hôtel de Ville,45.695062,4.936856,1
+T229,Esplanade des Arts,45.694499,4.940625,1
+T230,Saint-Priest Jules Ferry,45.694730,4.946818,1
+T231,Cordière,45.693633,4.949748,1
+T232,Saint-Priest Bel Air,45.692658,4.955810,1
+T301,Gare Part-Dieu Villette,45.760260,4.861937,1
+T302,Dauphiné - Lacassagne,45.752956,4.868636,1
+T303,Reconnaissance Balzac,45.754613,4.885192,1
+T304,Gare de Villeurbanne,45.755937,4.892267,1
+T305,Bel Air - Les Brosses,45.758443,4.910543,1
+T306,Vaulx-en-Velin La Soie,45.761043,4.922150,1
+T307,Décines Centre,45.771872,4.955925,1
+T308,Décines Grand Large,45.774698,4.976076,1
+T309,Meyzieu Gare,45.771680,4.998778,1
+T310,Meyzieu Z.i.,45.767709,5.031686,1
+T311,Meyzieu Les Panettes,45.766162,5.034984,1
+T401,La Doua Gaston Berger,45.781584,4.871898,1
+T402,Université Lyon 1,45.780916,4.866447,1
+T403,Condorcet,45.778009,4.866914,1
+T404,Le Tonkin,45.774100,4.864031,1
+T405,Chapennes Charles Hernu,45.771197,4.863075,1
+T406,Collège Bellecombe,45.766741,4.861922,1
+T407,Thiers - Lafayette,45.764435,4.862038,1
+T408,Gare Part-Dieu Villette,45.760260,4.861937,1
+T409,Archives Départementales,45.754457,4.861771,1
+T410,Manufacture - Montluc,45.750183,4.860342,1
+T411,Lycée Colbert,45.745631,4.859036,1
+T412,Jet d'Eau - Mendès-France,45.740084,4.859169,1
+T413,Lycée Lumière,45.736782,4.861841,1
+T414,Etats-Unis - Musée Tony Garnier,45.733000,4.864811,1
+T415,Beauvisage - CISL,45.729838,4.867246,1
+T416,Etats-Unis - Viviani,45.724887,4.871111,1
+T417,Juliot-Curie - Marcel Sembat,45.715491,4.878419,1
+T418,La Borelle,45.711143,4.882165,1
+T419,Gare de Vénissieux,45.705638,4.887739,1
+T420,Croizat - Paul Bert,45.700076,4.887636,1
+T421,Marcel Houël - Hotel de Ville,45.696524,4.884579,1
+T422,Lycée Jacques Brel,45.694920,4.879867,1
+T423,Herriot - Cagne,45.693776,4.875489,1
+T424,Vénissy Frida Kahlo,45.696012,4.871996,1
+T425,Division Leclerc,45.698407,4.868261,1
+T426,Maurice Thorez,45.699863,4.863342,1
+T427,Lénine - Corsière,45.696828,4.861809,1
+T428,Darnaise,45.692624,4.864381,1
+T429,Hôpital Feyzin Vénissieux,45.688250,4.865174,1
+T501,Grange Blanche,45.742453,4.879701,1
+T502,Ambroise Paré,45.741490,4.884058,1
+T503,Desgenettes,45.738788,4.893439,1
+T504,Essart - Iris,45.737265,4.898062,1
+T505,Boutasse - Camille Rousset,45.734933,4.904496,1
+T506,Hôtel de Ville - Bron,45.733413,4.909088,1
+T507,Les Alizés,45.731545,4.914729,1
+T508,De Tassigny - Curial,45.735784,4.917023,1
+T509,Lycée Jean-Paul Sartre,45.738018,4.922158,1
+T510,Parc du Chêne,45.739034,4.926688,1
+T511,Eurexpo,45.731984,4.948010,1
+T601,Debourg,45.731231,4.834470,1
+T602,Challemel-Lacour - Artillerie,45.729678,4.843619,1
+T603,Moulin à Vent,45.729559,4.853163,1
+T604,Petite Guille,45.731042,4.858820,1
+T605,Beauvisage Pressensé,45.727752,4.862730,1
+T606,Beauvisage - CISL,45.729211,4.867045,1
+T607,Grange Rouge - Santy,45.731361,4.873391,1
+T608,Mermoz Californie,45.733081,4.878468,1
+T609,Mermoz - Moselle,45.732322,4.882134,1
+T610,Mermoz - Pinel,45.730804,4.886790,1
+T611,Essarts - Laënnec,45.735513,4.889963,1
+T612,Desgenettes,45.739570,4.892395,1
+T613,Vinatier,45.742516,4.894072,1
+T614,Hôpitaux Est - Pinel,45.747503,4.896768,1
+T701,Vaulx-en-Velin La Soie,45.761043,4.922150,1
+T702,Décines Centre,45.771872,4.955925,1
+T703,Décines Grand Large,45.774698,4.976076,1
+T704,Décines - OL Valée,45.768743,4.981630,1
+F101,Vieux Lyon - Cathédrale Saint-Jean,45.759972,4.826496,1
+F102,Minimes - Théâtres Romains,45.758648,4.821350,1
+F103,Saint-Just,45.757194,4.816450,1
+F201,Vieux Lyon - Cathédrale Saint-Jean,45.759972,4.826496,1
+F202,Fourvière,45.762387,4.821483,1
