@@ -5,35 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	// Import the graph package
 )
-
-func main() {
-	// Initialize the graph
-	graph := NewGraph()
-
-	// Load the data
-	err := loadStops("../data/stops.csv", graph)
-	if err != nil {
-		fmt.Printf("Error loading stops: %v\n", err)
-		return
-	}
-
-	err = loadTrips("../data/trips.csv", graph)
-	if err != nil {
-		fmt.Printf("Error loading trips: %v\n", err)
-		return
-	}
-
-	err = loadTransfers("../data/transfers.csv", graph)
-	if err != nil {
-		fmt.Printf("Error loading transfers: %v\n", err)
-		return
-	}
-
-	// Print the graph to check the data
-	graph.PrintGraph()
-}
 
 // loadStops loads stop data from stops.csv and adds the stops to the graph
 func loadStops(filePath string, graph *Graph) error {
@@ -87,14 +59,16 @@ func loadTrips(filePath string, graph *Graph) error {
 			return fmt.Errorf("failed to read record: %w", err)
 		}
 
-		fromStopID := record[1]              // from_stop_id
-		toStopID := record[2]                // to_stop_id
-		time, err := strconv.Atoi(record[3]) // time (in seconds)
+		fromStopID := record[1]                     // from_stop_id
+		toStopID := record[2]                       // to_stop_id
+		timeSeconds, err := strconv.Atoi(record[3]) // time (in seconds)
 		if err != nil {
 			return fmt.Errorf("invalid time value: %w", err)
 		}
-		graph.AddEdge(fromStopID, toStopID, "trip", time)
-		graph.AddEdge(toStopID, fromStopID, "trip", time)
+
+		// Add edge in both directions
+		graph.AddEdge(fromStopID, toStopID, "trip", timeSeconds)
+		graph.AddEdge(toStopID, fromStopID, "trip", timeSeconds)
 	}
 
 	return nil
@@ -123,14 +97,16 @@ func loadTransfers(filePath string, graph *Graph) error {
 			return fmt.Errorf("failed to read record: %w", err)
 		}
 
-		fromStopID := record[1]              // from_stop_id
-		toStopID := record[2]                // to_stop_id
-		time, err := strconv.Atoi(record[3]) // min_transfer_time (in seconds)
+		fromStopID := record[1]                     // from_stop_id
+		toStopID := record[2]                       // to_stop_id
+		timeSeconds, err := strconv.Atoi(record[3]) // min_transfer_time (in seconds)
 		if err != nil {
 			return fmt.Errorf("invalid transfer time value: %w", err)
 		}
-		graph.AddEdge(fromStopID, toStopID, "transfer", time)
-		graph.AddEdge(toStopID, fromStopID, "transfer", time)
+
+		// Add edge in both directions
+		graph.AddEdge(fromStopID, toStopID, "transfer", timeSeconds)
+		graph.AddEdge(toStopID, fromStopID, "transfer", timeSeconds)
 	}
 
 	return nil
