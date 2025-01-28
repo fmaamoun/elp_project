@@ -1,43 +1,77 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
+	"math"
+	"time"
 )
 
-type Request struct {
-	StartNode string `json:"start_node"`
-	EndNode   string `json:"end_node"`
-}
-
-type Response struct {
-	Distance int      `json:"distance"`
-	Path     []string `json:"path"`
-}
-
-func dijkstraHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var req Request
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Bad request", http.StatusBadRequest)
-		return
-	}
-
-	// Simuler une réponse
-	resp := Response{Distance: 10, Path: []string{"A", "B", "C"}}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
-}
-
 func main() {
-	http.HandleFunc("/dijkstra", dijkstraHandler)
-	fmt.Println("Server is running on port 8080...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// 1. Create an empty graph
+	graph := NewGraph()
+	// 2. Load stops, trips, and transfers from CSV files
+	//    (Adjust file paths to match your actual directory structure!)
+	err := LoadStops("./go/data/stops.csv", graph)
+	if err != nil {
+		log.Fatalf("Error loading stops: %v", err)
+	}
+	err = LoadTrips("./go/data/trips.csv", graph)
+	if err != nil {
+		log.Fatalf("Error loading trips: %v", err)
+	}
+	err = LoadTransfers("./go/data/transfers.csv", graph)
+	if err != nil {
+		log.Fatalf("Error loading transfers: %v", err)
+	}
+	// 3. (Optional) Print the full graph to verify data
+	// fmt.Println("---- Loaded Graph ----")
+	// graph.PrintGraph()
+	/*
+	   -----------------------------------------------------------
+	   Measure time for each of the Dijkstra variations:
+	   A) Single-Pair from "startNode" to "endNode"
+	   B) All-Pairs Shortest Paths (Concurrent)
+	   C) All-Pairs Shortest Paths (Sequential)
+	   -----------------------------------------------------------
+	*/
+	startNode := "MA01"
+	endNode := "T101"
+	// A) Single-Pair
+	fmt.Printf("\n--- Single Pair: Dijkstra from %s to %s ---\n", startNode, endNode)
+	t0 := time.Now()
+	dist, path := DijkstraSinglePair(graph, startNode, endNode)
+	t1 := time.Since(t0)
+	if dist == math.MaxInt {
+		fmt.Printf("No path found from %s to %s\n", startNode, endNode)
+	} else {
+		fmt.Printf("Distance: %d\n", dist)
+		fmt.Printf("Path: %v\n", path)
+	}
+	fmt.Printf("Single-Pair run time: %v\n", t1)
+	// B) All-Pairs (Concurrent)
+	fmt.Println("\n--- All-Pairs Shortest Paths (Concurrent) ---")
+	startTime := time.Now()
+	apspConcurrent := AllPairsShortestPathsConcurrent(graph)
+	concurrentTime := time.Since(startTime)
+	fmt.Printf("Concurrent APSP completed in %v\n", concurrentTime)
+	// Demonstrate reading from the map (optional)
+	if distances, ok := apspConcurrent[startNode]; ok {
+		fmt.Printf("Distances from node %s (concurrent):\n", startNode)
+		for node, d := range distances {
+			fmt.Printf("  %s: %d\n", node, d)
+		}
+	}
+	// C) All-Pairs (Sequential)
+	fmt.Println("\n--- All-Pairs Shortest Paths (Sequential) ---")
+	startTime = time.Now()
+	apspSequential := AllPairsShortestPathsSequential(graph)
+	sequentialTime := time.Since(startTime)
+	fmt.Printf("Sequential APSP completed in %v\n", sequentialTime)
+	if distances, ok := apspSequential[startNode]; ok {
+		fmt.Printf("Distances from node %s (sequential):\n", startNode)
+		for node, d := range distances {
+			fmt.Printf("  %s: %d\n", node, d)
+		}
+	}
 }
