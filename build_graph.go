@@ -8,7 +8,7 @@ import (
 )
 
 // loadStops loads stop data from stops.csv and adds the stops to the graph
-func loadStops(filePath string, graph *Graph) error {
+func LoadStops(filePath string, graph *Graph) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to open file %s: %w", filePath, err)
@@ -37,7 +37,7 @@ func loadStops(filePath string, graph *Graph) error {
 }
 
 // loadTrips loads trip data from trips.csv and adds the trips to the graph
-func loadTrips(filePath string, graph *Graph) error {
+func LoadTrips(filePath string, graph *Graph) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to open file %s: %w", filePath, err)
@@ -75,7 +75,7 @@ func loadTrips(filePath string, graph *Graph) error {
 }
 
 // loadTransfers loads transfer data from transfers.csv and adds the transfers to the graph
-func loadTransfers(filePath string, graph *Graph) error {
+func LoadTransfers(filePath string, graph *Graph) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("failed to open file %s: %w", filePath, err)
