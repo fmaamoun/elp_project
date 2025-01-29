@@ -1,0 +1,50 @@
+# ---- GO ----
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build artifacts
+*.log
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+vendor/
+
+# Dependency directories (if not vendoring)
+bin/
+pkg/
+cache/
+
+# ---- NODE/JS ----
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build output
+dist/
+build/
+*.bundle.js
+
+# Environment variables
+.env
+.env.*.local
+
+# IDE/Editor-specific
+.idea/
+.vscode/
+*.iml
+
+# ---- ELM ----
+# Elm project build artifacts
+elm-stuff/
+elm.js
