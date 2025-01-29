@@ -1,3 +1,3 @@
-module example/go_project
+module go_project
 
 go 1.23.4
