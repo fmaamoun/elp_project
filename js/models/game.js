@@ -65,7 +65,7 @@ export default class Game {
 
       // Instructions to players
       console.log("\nClue-givers, please look at the secret word.");
-      console.log("Guesser, please look away.\n");
+      readline.question("Guesser, please look away.\n");
       
       // Display the secret word to clue-givers
       console.log(`Secret Word (visible to clue-givers): ${secretWord}\n`);
