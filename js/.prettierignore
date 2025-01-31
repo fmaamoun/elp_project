@@ -1,0 +1,10 @@
+# Ignore these directories
+node_modules/
+src-tauri/
+
+# Ignore specific files in the root
+.prettierignore
+.prettierrc
+package.json
+package-lock.json
+README.md
