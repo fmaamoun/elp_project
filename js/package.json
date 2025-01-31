@@ -1,0 +1,21 @@
+{
+  "name": "just-one-game",
+  "version": "1.0.0",
+  "description": "A text-based version of the 'Just One' game using JavaScript and Node.js",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
