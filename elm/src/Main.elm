@@ -5,6 +5,8 @@ import Html exposing (Html, button, div, form, input, text)
 import Html.Attributes exposing (placeholder, value, style, type_)
 import Html.Events exposing (onClick, onInput, onSubmit)
 
+-- IMPORTANT: On importe en plus `commandsToString` pour afficher correctement la liste de commandes.
+import TcTurtleParser exposing (read, Command(..), commandsToString)
 
 
 -- MODÈLE
@@ -39,25 +41,47 @@ update msg model =
             { model | userInput = newInput }
 
         Submit ->
-            { model | result = model.userInput }
-        
+            parseInput model.userInput model
 
         SubmitForm ->
-            { model | result = model.userInput }
+            parseInput model.userInput model
+
+
+-- Fonction auxiliaire pour parser l'entrée et mettre à jour le résultat
+parseInput : String -> Model -> Model
+parseInput input model =
+    case read input of
+        Ok commands ->
+            { model
+                | result =
+                    "Commande(s) parseée(s) avec succès : "
+                        ++ commandsToString commands
+            }
+
+        Err errorMsg ->
+            { model
+                | result = "Erreur de parsing : " ++ errorMsg
+            }
+
 
 
 -- VUE
 
 view : Model -> Html Msg
 view model =
-    div [ style "display" "flex"
+    div
+        [ style "display" "flex"
         , style "flex-direction" "column"
         , style "align-items" "center"
         , style "justify-content" "center"
         , style "height" "100vh"
         , style "background-color" "#f0f0f0"
         ]
-        [ form [ onSubmit SubmitForm, style "display" "flex", style "align-items" "center" ]
+        [ form
+            [ onSubmit SubmitForm
+            , style "display" "flex"
+            , style "align-items" "center"
+            ]
             [ input
                 [ type_ "text"
                 , placeholder "Entrez votre texte ici..."
@@ -83,18 +107,19 @@ view model =
                 ]
                 [ text "Entrer" ]
             ]
-        , div [ style "margin-top" "20px"
-              , style "width" "400px"
-              , style "height" "200px"
-              , style "border" "2px solid #4CAF50"
-              , style "border-radius" "8px"
-              , style "padding" "20px"
-              , style "background-color" "white"
-              , style "box-shadow" "0 4px 8px rgba(0, 0, 0, 0.1)"
-              , style "display" "flex"
-              , style "align-items" "center"
-              , style "justify-content" "center"
-              ]
+        , div
+            [ style "margin-top" "20px"
+            , style "width" "400px"
+            , style "height" "200px"
+            , style "border" "2px solid #4CAF50"
+            , style "border-radius" "8px"
+            , style "padding" "20px"
+            , style "background-color" "white"
+            , style "box-shadow" "0 4px 8px rgba(0, 0, 0, 0.1)"
+            , style "display" "flex"
+            , style "align-items" "center"
+            , style "justify-content" "center"
+            ]
             [ text model.result ]
         ]
 
