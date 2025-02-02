@@ -1,19 +1,18 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Browser
 import Html exposing (Html, button, div, form, input, text)
-import Html.Attributes exposing (placeholder, value, style, type_)
-import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Attributes exposing (class, placeholder, type_, value)
+import Html.Events exposing (onInput, onSubmit)
+import TurtleParser exposing (read, Command(..), commandsToString)
+import TurtleDrawing exposing (display)
 
--- IMPORTANT: On importe en plus `commandsToString` pour afficher correctement la liste de commandes.
-import TcTurtleParser exposing (read, Command(..), commandsToString)
 
-
--- MODÈLE
-
+-- MODEL
 type alias Model =
     { userInput : String
     , result : String
+    , commands : Maybe (List Command)
     }
 
 
@@ -21,110 +20,61 @@ init : Model
 init =
     { userInput = ""
     , result = ""
+    , commands = Nothing
     }
 
 
--- MESSAGES
-
+-- UPDATE
 type Msg
     = UpdateInput String
-    | Submit
     | SubmitForm
 
-
--- MISE À JOUR
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        UpdateInput newInput ->
-            { model | userInput = newInput }
-
-        Submit ->
-            parseInput model.userInput model
+        UpdateInput input ->
+            { model | userInput = input }
 
         SubmitForm ->
-            parseInput model.userInput model
+            case read model.userInput of
+                Ok cmds ->
+                    { model
+                        | result = "Parsed: " ++ commandsToString cmds
+                        , commands = Just cmds
+                    }
+
+                Err err ->
+                    { model
+                        | result = "Parsing error: " ++ err
+                        , commands = Nothing
+                    }
 
 
--- Fonction auxiliaire pour parser l'entrée et mettre à jour le résultat
-parseInput : String -> Model -> Model
-parseInput input model =
-    case read input of
-        Ok commands ->
-            { model
-                | result =
-                    "Commande(s) parseée(s) avec succès : "
-                        ++ commandsToString commands
-            }
-
-        Err errorMsg ->
-            { model
-                | result = "Erreur de parsing : " ++ errorMsg
-            }
-
-
-
--- VUE
-
+-- VIEW
 view : Model -> Html Msg
 view model =
-    div
-        [ style "display" "flex"
-        , style "flex-direction" "column"
-        , style "align-items" "center"
-        , style "justify-content" "center"
-        , style "height" "100vh"
-        , style "background-color" "#f0f0f0"
-        ]
-        [ form
-            [ onSubmit SubmitForm
-            , style "display" "flex"
-            , style "align-items" "center"
-            ]
+    div [ class "container" ]
+        [ form [ class "form-container", onSubmit SubmitForm ]
             [ input
-                [ type_ "text"
-                , placeholder "Entrez votre texte ici..."
+                [ class "input-field"
+                , type_ "text"
+                , placeholder "Enter commands..."
                 , value model.userInput
                 , onInput UpdateInput
-                , style "padding" "10px"
-                , style "font-size" "16px"
-                , style "border" "1px solid #ccc"
-                , style "border-radius" "4px"
-                , style "outline" "none"
                 ]
                 []
-            , button
-                [ type_ "submit"
-                , style "padding" "10px 20px"
-                , style "font-size" "16px"
-                , style "margin-left" "10px"
-                , style "border" "none"
-                , style "border-radius" "4px"
-                , style "background-color" "#4CAF50"
-                , style "color" "white"
-                , style "cursor" "pointer"
-                ]
-                [ text "Entrer" ]
+            , button [ class "submit-button", type_ "submit" ] [ text "Submit" ]
             ]
-        , div
-            [ style "margin-top" "20px"
-            , style "width" "400px"
-            , style "height" "200px"
-            , style "border" "2px solid #4CAF50"
-            , style "border-radius" "8px"
-            , style "padding" "20px"
-            , style "background-color" "white"
-            , style "box-shadow" "0 4px 8px rgba(0, 0, 0, 0.1)"
-            , style "display" "flex"
-            , style "align-items" "center"
-            , style "justify-content" "center"
-            ]
-            [ text model.result ]
+        , div [ class "result-box" ]
+            (case model.commands of
+                Just cmds ->
+                    [ display cmds ]
+                Nothing ->
+                    [ text model.result ]
+            )
         ]
 
-
--- PROGRAMME PRINCIPAL
 
 main : Program () Model Msg
 main =

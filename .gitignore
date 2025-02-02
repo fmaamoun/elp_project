@@ -46,5 +46,4 @@ build/
 
 # ---- ELM ----
 # Elm project build artifacts
-elm-stuff/
-elm.js
+elm/elm-stuff/

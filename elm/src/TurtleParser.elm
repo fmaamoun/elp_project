@@ -1,24 +1,11 @@
-module TcTurtleParser exposing (Command(..), read, commandsToString)
+module TurtleParser exposing (Command(..), read, commandsToString)
 
 import Parser exposing
-    ( Parser
-    , run
-    , oneOf
-    , symbol
-    , spaces
-    , succeed
-    , (|.)
-    , (|=)
-    , float
-    , andThen
-    , lazy
-    )
+    ( Parser, run, oneOf, symbol, spaces, succeed, (|.), (|=), float, andThen, lazy )
 import String exposing (fromInt)
 
 
-{-|
-    1) TYPE DE COMMANDE
--}
+-- COMMAND TYPE DEFINITION
 type Command
     = Forward Int
     | Back Int
@@ -27,14 +14,10 @@ type Command
     | Repeat Int (List Command)
 
 
-{-|
-    2) AFFICHAGE
--}
+-- Convert a list of commands to a string.
 commandsToString : List Command -> String
 commandsToString cmds =
-    cmds
-        |> List.map commandToString
-        |> String.join ", "
+    String.join ", " (List.map commandToString cmds)
 
 
 commandToString : Command -> String
@@ -53,33 +36,23 @@ commandToString cmd =
             "Right " ++ fromInt n
 
         Repeat n subcmds ->
-            "Repeat " ++ fromInt n
-                ++ " ["
-                ++ commandsToString subcmds
-                ++ "]"
+            "Repeat " ++ fromInt n ++ " [" ++ commandsToString subcmds ++ "]"
 
 
-{-|
-    3) PARSER D’UN ENTIER
-    On lit un float, qu’on convertit en Int
--}
+-- PARSER FOR AN INTEGER (reads a float then rounds it)
 intParser : Parser Int
 intParser =
-    float
-        |> andThen (\f ->
-            succeed (round f)
-        )
+    float |> andThen (\f -> succeed (round f))
 
 
-{-|
-    4) CHACUNE DES COMMANDES SIMPLES
--}
+-- SIMPLE COMMAND PARSERS
 forwardParser : Parser Command
 forwardParser =
     succeed Forward
         |. symbol "Forward"
         |. spaces
         |= intParser
+
 
 backParser : Parser Command
 backParser =
@@ -88,12 +61,14 @@ backParser =
         |. spaces
         |= intParser
 
+
 leftParser : Parser Command
 leftParser =
     succeed Left
         |. symbol "Left"
         |. spaces
         |= intParser
+
 
 rightParser : Parser Command
 rightParser =
@@ -103,10 +78,6 @@ rightParser =
         |= intParser
 
 
-{-|
-    5) PARSER "REPEAT"
-    Il se réfère à `commandsParser ()`, donc la liste de commandes
--}
 repeatParser : Parser Command
 repeatParser =
     succeed Repeat
@@ -121,44 +92,33 @@ repeatParser =
         |. symbol "]"
 
 
-{-|
-    6) "commandParser" DEVIENT UNE FONCTION
-    pour éviter la boucle de dépendances
--}
 commandParser : Parser Command
 commandParser =
-    oneOf
-        [ forwardParser
-        , backParser
-        , leftParser
-        , rightParser
-        , repeatParser
-        ]
+    oneOf [ forwardParser, backParser, leftParser, rightParser, repeatParser ]
 
 
-{-|
-    7) LISTE DE COMMANDES
-    Elle se réfère à `commandParser ()`
--}
+-- PARSER FOR A LIST OF COMMANDS SEPARATED BY COMMAS
 commandsParser : Parser (List Command)
 commandsParser =
     succeed (::)
         |= lazy (\_ -> commandParser)
-        |= lazy (\_ -> manyCommandsParser)
+        |= manyCommandsParser
 
 
 manyCommandsParser : Parser (List Command)
 manyCommandsParser =
     oneOf
-        [ succeed (\c tail -> c :: tail)
+        [ succeed (\cmd tail -> cmd :: tail)
             |. symbol ","
             |. spaces
-            |= lazy (\_ -> commandParser)
+            |= commandParser
             |= lazy (\_ -> manyCommandsParser)
         , succeed []
         ]
 
 
+
+-- A PROGRAM IS A LIST OF COMMANDS ENCLOSED IN BRACKETS
 programParser : Parser (List Command)
 programParser =
     succeed identity
@@ -169,6 +129,7 @@ programParser =
         |. symbol "]"
 
 
+-- READ FUNCTION: Parses input into a list of commands.
 read : String -> Result String (List Command)
 read input =
     case run programParser input of
@@ -176,4 +137,4 @@ read input =
             Ok cmds
 
         Err _ ->
-            Err "error"
+            Err "Error parsing input"
