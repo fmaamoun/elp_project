@@ -1,4 +1,4 @@
-module TurtleDrawing exposing (display)
+module TurtleDrawing exposing (displayPartial)
 
 import Svg exposing (Svg, svg, polyline)
 import Svg.Attributes exposing (points, viewBox, width, height, stroke, strokeWidth, fill)
@@ -72,17 +72,18 @@ processCommands cmds state =
     List.foldl (\cmd st -> processCommand st cmd) state cmds
 
 
--- Compute the turtle's path.
-computePath : List TurtleParser.Command -> List Point
-computePath cmds =
+-- Compute the turtle's path up to a given step.
+computePath : List TurtleParser.Command -> Int -> List Point
+computePath cmds stepCount =
     let
         initState =
             { pos = { x = 0, y = 0 }
             , angle = 0
             , path = [ { x = 0, y = 0 } ]
             }
+        limitedCmds = List.take stepCount cmds
     in
-    (processCommands cmds initState).path
+    (processCommands limitedCmds initState).path
 
 
 -- Convert a list of points into a string for the SVG "points" attribute.
@@ -93,11 +94,11 @@ pointsStr pts =
         |> String.join " "
 
 
--- Generate the SVG drawing from the commands.
-display : List TurtleParser.Command -> Svg msg
-display cmds =
+-- Generate the SVG drawing progressively.
+displayPartial : List TurtleParser.Command -> Int -> Svg msg
+displayPartial cmds stepCount =
     let
-        pts = computePath cmds
+        pts = computePath cmds stepCount
     in
     svg [ width "400", height "400", viewBox "-200 -200 400 400" ]
         [ polyline [ points (pointsStr pts), stroke "black", strokeWidth "2", fill "none" ] [] ]
