@@ -25,7 +25,7 @@ export default class Game {
     this.teamScore = 0
 
     // Name of the file that will store proposals
-    this.proposalsFile = "proposals.txt"
+    this.proposalsFile = "proposals.log"
   }
 
   // Prompts the user to input player names
@@ -112,7 +112,11 @@ export default class Game {
     this.showSecretWordToClueGivers(secretWord)
 
     // Collect proposals from all clue-givers (except guesser)
-    const proposals = this.collectProposals(guesserIndex, selectedWordIndex, round)
+    const proposals = this.collectProposals(
+      guesserIndex,
+      selectedWordIndex,
+      round,
+    )
 
     // Remove duplicates among proposals
     const uniqueProposals = this.removeDuplicateProposals(proposals)
