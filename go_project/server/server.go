@@ -13,7 +13,8 @@ import (
 const ServerPort = ":8000"
 
 // handleClient handles communication with a single client.
-func handleClient(conn net.Conn) {
+func handleClient(conn net.Conn, wg *sync.WaitGroup) {
+	defer wg.Done()
 	defer conn.Close()
 
 	reader := bufio.NewReader(conn)
@@ -71,10 +72,7 @@ func main() {
 		}
 
 		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			handleClient(conn)
-		}()
+		go handleClient(conn, &wg)
 	}
 
 	// Note: wg.Wait() is not reachable here.

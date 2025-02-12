@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -13,7 +14,7 @@ import (
 
 // Constants for random graph generation.
 const (
-	numClients = 2 // Number of parallel client connections
+	numClients = 5 // Number of parallel client connections
 	numNodes   = 5 // Exact number of nodes in each graph
 	maxEdges   = 5 // Maximum edges per node
 	serverAddr = "localhost:8000"
@@ -24,15 +25,11 @@ const (
 func generateRandomGraph() *graph.Graph {
 	g := graph.NewGraph()
 
-	// Generate node IDs based on the exact number of nodes.
+	// Generate node IDs and add them to the graph.
 	nodeIDs := make([]string, 0, numNodes)
 	for i := 0; i < numNodes; i++ {
 		nodeIDs = append(nodeIDs, fmt.Sprintf("Node%d", i+1))
-	}
-
-	// Explicitly add each node to the graph, even if it has no edges.
-	for _, node := range nodeIDs {
-		g.AdjacencyList[node] = make(map[string]float64) // Ensure the node exists
+		g.AddNode(fmt.Sprintf("Node%d", i+1))
 	}
 
 	// For each node, add up to maxEdges random edges to other nodes.
@@ -75,16 +72,15 @@ func sendGraphAndReceiveResults(g *graph.Graph, clientID int, buffer *bytes.Buff
 	}
 
 	// Read the response (All-Pairs Shortest Paths).
-	buf := make([]byte, 65536) // Buffer for large responses
-	n, err := conn.Read(buf)
+	reader := bufio.NewReader(conn)
+	response, err := reader.ReadBytes('\n') // Read until newline
 	if err != nil {
 		fmt.Fprintf(buffer, "[Client %d] Error reading response: %v\n", clientID, err)
-		return
 	}
 
 	// Unmarshal the results.
 	var results map[string]map[string]graph.PathInfo
-	err = json.Unmarshal(buf[:n], &results)
+	err = json.Unmarshal(response, &results)
 	if err != nil {
 		fmt.Fprintf(buffer, "[Client %d] Error unmarshaling response: %v\n", clientID, err)
 		return
@@ -119,12 +115,10 @@ func main() {
 			var buffer bytes.Buffer
 
 			// Generate the random graph
-			fmt.Fprintf(&buffer, "[Client %d] Generating random graph...\n", clientID)
 			g := generateRandomGraph()
 
 			// Print the generated graph
 			fmt.Fprintf(&buffer, "[Client %d] Printing the random graph...\n", clientID)
-			buffer.WriteString("Graph Structure:\n")
 			for from, edges := range g.AdjacencyList {
 				for to, weight := range edges {
 					fmt.Fprintf(&buffer, "  %s -> %s [Weight: %.2f]\n", from, to, weight)
@@ -132,7 +126,6 @@ func main() {
 			}
 
 			// Send the graph and process the results
-			fmt.Fprintf(&buffer, "[Client %d] Connecting to server...\n", clientID)
 			sendGraphAndReceiveResults(g, clientID, &buffer)
 
 			// Print all buffered output for this client

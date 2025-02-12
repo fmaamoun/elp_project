@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bytes"
+	"bufio"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
@@ -15,6 +15,9 @@ import (
 
 // TCP server address
 const serverAddr = "localhost:8000"
+
+// Map nom station
+var stopsMap = make(map[string]string)
 
 // LoadStops loads stop data from stops.csv and adds the stops to the graph
 func LoadStops(filePath string, graph *graph.Graph) error {
@@ -39,6 +42,7 @@ func LoadStops(filePath string, graph *graph.Graph) error {
 			return fmt.Errorf("failed to read record: %w", err)
 		}
 		stopID := record[0] // stop_id
+		stopsMap[stopID] = stopID[:2] + " : " + record[1]
 		graph.AddNode(stopID)
 	}
 
@@ -139,25 +143,16 @@ func sendGraphAndReceiveResults(g *graph.Graph) {
 		log.Fatalf("Error sending graph to server: %v", err)
 	}
 
-	// Prepare a buffer to read the response
-	var response bytes.Buffer
-	buf := make([]byte, 4096)
-	for {
-		n, err := conn.Read(buf)
-		if n > 0 {
-			response.Write(buf[:n])
-		}
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			log.Fatalf("Error reading server response: %v", err)
-		}
+	// Read the response
+	reader := bufio.NewReader(conn)
+	response, err := reader.ReadBytes('\n') // Read until newline
+	if err != nil {
+		log.Fatalf("Error reading response: %v", err)
 	}
 
 	// Deserialize the server response
 	var results map[string]map[string]graph.PathInfo
-	err = json.Unmarshal(response.Bytes(), &results)
+	err = json.Unmarshal(response, &results)
 	if err != nil {
 		log.Fatalf("Error unmarshaling response: %v", err)
 	}
@@ -165,12 +160,17 @@ func sendGraphAndReceiveResults(g *graph.Graph) {
 	// Print the results grouped by source node
 	fmt.Println("Received All-Pairs Shortest Paths:")
 	for src, dstMap := range results {
-		fmt.Printf("Source: %s\n", src)
+		fmt.Printf("Source: %s\n", stopsMap[src])
 		for dst, info := range dstMap {
 			if info.Distance == -1 {
-				fmt.Printf("  -> %s: Temps (en sec) : Unreachable, Path: N/A\n", dst)
+				fmt.Printf("  -> %s: Temps (en sec) : Unreachable, Path: N/A\n", stopsMap[dst])
 			} else {
-				fmt.Printf("  -> %s: Temps (en sec) : %.2f, Path: %v\n", dst, info.Distance, info.Path)
+				fmt.Printf("  -> %s (%.0f sec) \n", stopsMap[dst], info.Distance)
+				/*
+					for _, stop := range info.Path {
+						fmt.Printf("    -> %s \n", stopsMap[stop])
+					}
+				*/
 			}
 		}
 		fmt.Println() // Add a blank line for readability

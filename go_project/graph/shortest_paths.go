@@ -1,6 +1,9 @@
 package graph
 
-import "math"
+import (
+	"math"
+	"sync"
+)
 
 // PathInfo represents the shortest path and its total distance.
 type PathInfo struct {
@@ -8,34 +11,70 @@ type PathInfo struct {
 	Distance float64  `json:"distance"`
 }
 
-// AllPairsShortestPaths computes the shortest paths and total distances for all pairs of nodes.
-// It returns a map of (source -> destination -> PathInfo).
-// Unreachable destinations have Distance set to -1 and an empty Path.
+// AllPairsShortestPaths computes the shortest paths and total distances for all pairs of nodes
+// using a worker pool with a fixed maximum number of workers. Unreachable destinations have
+// Distance set to -1 and an empty Path.
 func (g *Graph) AllPairsShortestPaths() map[string]map[string]PathInfo {
-	results := make(map[string]map[string]PathInfo)
+	const MaxWorkers = 5 // Limit the number of worker goroutines
 
-	for src := range g.AdjacencyList {
-		dist, prev := g.DijkstraWithPath(src)
-		results[src] = make(map[string]PathInfo)
-		for dst := range g.AdjacencyList {
-			if src == dst {
-				continue // Optionally, skip or handle self-pairs
-			}
-			if dist[dst] == math.Inf(1) {
-				// Destination is unreachable from source
-				results[src][dst] = PathInfo{
-					Path:     []string{}, // Empty path
-					Distance: -1,         // Sentinel value indicating no path
+	var wg sync.WaitGroup
+	results := make(map[string]map[string]PathInfo)
+	mu := sync.Mutex{}
+
+	// jobs channel carries the source nodes (as strings) to process.
+	jobs := make(chan string, len(g.AdjacencyList))
+
+	// Worker function that processes nodes from the jobs channel.
+	worker := func() {
+		for src := range jobs {
+			// Compute shortest paths from src using Dijkstra's algorithm.
+			dist, prev := g.DijkstraWithPath(src)
+			paths := make(map[string]PathInfo)
+
+			for dst := range g.AdjacencyList {
+				// Skip the source itself.
+				if src == dst {
+					continue
 				}
-			} else {
-				path := ReconstructPath(prev, src, dst)
-				results[src][dst] = PathInfo{
-					Path:     path,
-					Distance: dist[dst],
+				if dist[dst] == math.Inf(1) {
+					// No path found: record unreachable destination.
+					paths[dst] = PathInfo{
+						Path:     []string{},
+						Distance: -1,
+					}
+				} else {
+					// Reconstruct the shortest path from src to dst.
+					paths[dst] = PathInfo{
+						Path:     ReconstructPath(prev, src, dst),
+						Distance: dist[dst],
+					}
 				}
 			}
+
+			// Safely update the shared results map.
+			mu.Lock()
+			results[src] = paths
+			mu.Unlock()
+
+			// Signal completion for this job.
+			wg.Done()
 		}
 	}
+
+	// Start the worker pool.
+	for i := 0; i < MaxWorkers; i++ {
+		go worker()
+	}
+
+	// Enqueue all source nodes into the jobs channel.
+	for src := range g.AdjacencyList {
+		wg.Add(1)
+		jobs <- src
+	}
+	close(jobs) // No more jobs will be sent.
+
+	// Wait until all jobs have been processed.
+	wg.Wait()
 
 	return results
 }
