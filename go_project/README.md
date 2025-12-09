@@ -28,8 +28,6 @@ cd client
 go run csv_client.go
 ```
 
-<br>
-
 ## Code Overview
 
 ### Graph Library 
