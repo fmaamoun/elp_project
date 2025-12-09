@@ -9,3 +9,5 @@ For comprehensive details on setup, running instructions, and code architecture,
 | **[elm/](https://www.google.com/search?q=elm/README.md)** | Elm (Functional Front-End) | The primary goal was to explore a **functional programming language** for front-end web visualization. | 
 | **[go\_project/](https://www.google.com/search?q=go_project/README.md)** | Go (Backend/Server) | **Shortest Paths Project:** Server-client architecture implementing all-pairs shortest paths (N x Dijkstra) on graph data **using Go**. |
 | **[js/](https://www.google.com/search?q=js/README.md)** | JavaScript (Node.js) | **JustOne (Console Game):** The goal was to use a **web language (JavaScript)** for console-based cooperative party game implementation. | 
+
+> Note : ELP stands for "Écosystème des langages de programmation" in French, which translates to "Programming Language Ecosystem."
